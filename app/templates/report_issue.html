@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Trash Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Report an Issue</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashes">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form method="POST" action="/report_issue">
+        <label for="issue_type">Issue Type:</label><br>
+        <select id="issue_type" name="issue_type" required>
+            <option value="webapp">Issue related to webapp</option>
+            <option value="points_not_allotted">Issue related to points not allotted</option>
+            <option value="points_deducted_wrongly">Issue related to points deducted wrongly</option>
+            <option value="other">Other</option>
+        </select><br><br>
+        
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="5" required></textarea><br><br>
+        
+        <input type="submit" value="Submit Issue">
+    </form>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+</body>
+</html>

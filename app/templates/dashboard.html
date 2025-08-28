@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Trash Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>User Dashboard</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashes">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <p>Welcome, {{ user.name }} {{ user.surname }}!</p>
+    <p>Your Current Points: {{ user.points }}</p>
+
+    <h2>Welcome, {{ user.name }}!</h2>
+<p>Points: {{ user.points }}</p>
+
+<h3>Upload Disposal Footage</h3>
+<form action="/upload_footage" method="post" enctype="multipart/form-data">
+    <input type="file" name="footage">
+    <input type="submit" value="Upload">
+</form>
+
+<h3>Recent Disposal Footages</h3>
+<ul>
+    {% for footage in disposal_footages %}
+        <li>{{ footage.timestamp }} - {{ footage.trash_type }} - {{ footage.points_awarded }} points</li>
+    {% endfor %}
+</ul>
+
+
+    <h2>Actions</h2>
+    <ul>
+        <li><a href="/redeem_points">Redeem Points</a></li>
+        <li><a href="/settings">Change Settings (Person Details)</a></li>
+        <li><a href="/report_issue">Report an Issue</a></li>
+        <li><a href="/faq">FAQ</a></li>
+    </ul>
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>

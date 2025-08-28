@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>User Details: {{ user.name }} {{ user.surname }}</h1>
+    <p><strong>ID:</strong> {{ user.id }}</p>
+    <p><strong>Aadhar ID:</strong> {{ user.aadhar_id }}</p>
+    <p><strong>Face ID:</strong> {{ user.face_id }}</p>
+    <p><strong>Points:</strong> {{ user.points }}</p>
+    <p><strong>Active:</strong> {{ 'Yes' if user.is_active else 'No' }}</p>
+    <p><strong>Registered At:</strong> {{ user.registered_at }}</p>
+
+    <h2>Reported Issues</h2>
+    {% if issues %}
+        <ul>
+            {% for issue in issues %}
+                <li>
+                    <strong>Issue ID:</strong> {{ issue.id }}<br>
+                    <strong>Type:</strong> {{ issue.issue_type }}<br>
+                    <strong>Description:</strong> {{ issue.description }}<br>
+                    <strong>Reported At:</strong> {{ issue.reported_at }}<br>
+                    <strong>Resolved:</strong> {{ 'Yes' if issue.is_resolved else 'No' }}<br>
+                    {% if issue.is_resolved %}
+                        <strong>Resolved By:</strong> {{ issue.resolved_by }}<br>
+                        <strong>Resolved At:</strong> {{ issue.resolved_at }}<br>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No issues reported by this user.</p>
+    {% endif %}
+
+    <p><a href="/admin/users">Back to User Management</a></p>
+</body>
+</html>

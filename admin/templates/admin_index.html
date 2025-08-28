@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Trash Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Admin Panel</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashes">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <p>This is the main page of the admin application.</p>
+    <ul>
+        {% if session.admin_logged_in %}
+            <li><a href="/admin/template/users">Manage Users</a></li>
+            <li><a href="/admin/template/issues">Review Issues</a></li>
+            <li><a href="/admin/template/model_status">ML Model Status</a></li>
+            <li><a href="/admin/template/logout">Logout</a></li>
+        {% else %}
+            <li><a href="/admin/login">Admin Login</a></li>
+        {% endif %}
+    </ul>
+</body>
+</html>

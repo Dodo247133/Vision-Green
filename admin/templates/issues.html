@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Issues - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Review Issues</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashes">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    {% if issues %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User ID</th>
+                    <th>Issue Type</th>
+                    <th>Description</th>
+                    <th>Reported At</th>
+                    <th>Resolved</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in issues %}
+                    <tr>
+                        <td>{{ issue.id }}</td>
+                        <td>{{ issue.user_id }}</td>
+                        <td>{{ issue.issue_type }}</td>
+                        <td>{{ issue.description }}</td>
+                        <td>{{ issue.reported_at }}</td>
+                        <td>{{ 'Yes' if issue.is_resolved else 'No' }}</td>
+                        <td>
+                            {% if not issue.is_resolved %}
+                                <form method="POST" action="{{ url_for('admin_resolve_issue', issue_id=issue.id) }}" style="display:inline;">
+                                    <input type="submit" value="Resolve" onclick="return confirm('Are you sure you want to resolve this issue?');">
+                                </form>
+                            {% else %}
+                                Resolved by {{ issue.resolved_by }} at {{ issue.resolved_at }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No issues reported yet.</p>
+    {% endif %}
+    <p><a href="/admin">Back to Admin Dashboard</a></p>
+</body>
+</html>
