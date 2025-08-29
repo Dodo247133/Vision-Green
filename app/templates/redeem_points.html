@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redeem Points - Trash Detection System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Redeem Points</h1>
-    <p>This page will allow users to redeem their accumulated points.</p>
-    <p>Currently, this feature is under development.</p>
-    <p><a href="/dashboard">Back to Dashboard</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Redeem Points - Vision Green{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Redeem Your Points</h2>
+</div>
+
+<div class="redeem-container">
+    <p>This feature is currently under development. Check back later for exciting rewards!</p>
+    <div class="coming-soon">
+        <i class="fas fa-gifts"></i>
+        <h3>Coming Soon!</h3>
+    </div>
+</div>
+{% endblock %}

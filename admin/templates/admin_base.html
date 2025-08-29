@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel - Vision Green{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/admin" class="logo">Vision Green Admin</a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/admin/template/users" class="{% if 'users' in request.path %}active{% endif %}"><i class="fas fa-users"></i> Manage Users</a></li>
+                    <li><a href="/admin/template/issues" class="{% if 'issues' in request.path %}active{% endif %}"><i class="fas fa-exclamation-triangle"></i> Review Issues</a></li>
+                    <li><a href="/admin/template/model_status" class="{% if 'model_status' in request.path %}active{% endif %}"><i class="fas fa-robot"></i> ML Model Status</a></li>
+                    <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h2>{% block page_title %}{% endblock %}</h2>
+                </div>
+            </header>
+            <div class="content-wrapper">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flashes">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

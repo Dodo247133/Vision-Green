@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vision Green{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="logo">Vision Green</a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="/redeem_points" class="{% if request.path == '/redeem_points' %}active{% endif %}"><i class="fas fa-gift"></i> Redeem Points</a></li>
+                    <li><a href="/report_issue" class="{% if request.path == '/report_issue' %}active{% endif %}"><i class="fas fa-exclamation-triangle"></i> Report Issue</a></li>
+                    <li><a href="/faq" class="{% if request.path == '/faq' %}active{% endif %}"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                    <li><a href="/settings" class="{% if request.path == '/settings' %}active{% endif %}"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="user-info">
+                    <span>Welcome, {{ user.name }}!</span>
+                    <div class="points">
+                        <i class="fas fa-star"></i> {{ user.points }} Points
+                    </div>
+                </div>
+            </header>
+            <div class="content-wrapper">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

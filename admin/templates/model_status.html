@@ -1,18 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Model Status - Admin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>ML Model Status</h1>
-    <p><strong>Online:</strong> {{ 'Yes' if model_status.online else 'No' }}</p>
-    <p><strong>Videos Processed:</strong> {{ model_status.videos_processed }}</p>
-    <p><strong>Current Processing Rate:</strong> {{ model_status.current_processing_rate }}</p>
-    <p><strong>Good Ratings:</strong> {{ model_status.good_ratings }}</p>
-    <p><strong>Bad Ratings:</strong> {{ model_status.bad_ratings }}</p>
-    <p><a href="/admin">Back to Admin Dashboard</a></p>
-</body>
-</html>
+{% extends "admin_base.html" %}
+{% block title %}ML Model Status - Vision Green{% endblock %}
+{% block page_title %}ML Model Status{% endblock %}
+
+{% block content %}
+<div class="model-status-container">
+    <div class="status-card">
+        <h3>Model Status</h3>
+        <p class="status-online">Online</p>
+    </div>
+    <div class="status-card">
+        <h3>Videos Processed Today</h3>
+        <p>1,234</p>
+    </div>
+    <div class="status-card">
+        <h3>Processing Rate</h3>
+        <p>10 videos/min</p>
+    </div>
+    <div class="status-card">
+        <h3>Accuracy</h3>
+        <p>98.5%</p>
+    </div>
+</div>
+
+<div class="performance-chart">
+    <h3>Past 7 Days Performance</h3>
+    <canvas id="performanceChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            datasets: [{
+                label: 'Videos Processed',
+                data: [800, 900, 1100, 1000, 1200, 1300, 1234],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -53,7 +53,13 @@ def admin_logout():
 @admin_app.route('/admin')
 @admin_login_required
 def admin_index():
-    return render_template('admin_index.html')
+    db_session = Session()
+    user_count = db_session.query(User).count()
+    open_issues_count = db_session.query(IssueReport).filter_by(is_resolved=False).count()
+    recent_users = db_session.query(User).order_by(User.id.desc()).limit(5).all()
+    recent_issues = db_session.query(IssueReport).order_by(IssueReport.id.desc()).limit(5).all()
+    db_session.close()
+    return render_template('admin_index.html', user_count=user_count, open_issues_count=open_issues_count, recent_users=recent_users, recent_issues=recent_issues)
 
 @admin_app.route('/admin/users')
 @admin_login_required

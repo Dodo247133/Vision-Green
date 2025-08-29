@@ -1,15 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - Trash Detection System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Frequently Asked Questions</h1>
-    <p>This page will contain answers to frequently asked questions.</p>
-    <p>Currently, this section is under development.</p>
-    <p><a href="/dashboard">Back to Dashboard</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}FAQ - Vision Green{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Frequently Asked Questions</h2>
+</div>
+
+<div class="faq-container">
+    <div class="faq-item">
+        <div class="faq-question">
+            <h3>How does the trash detection system work?</h3>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Our system uses advanced computer vision and machine learning algorithms to analyze CCTV footage in real-time. It can identify individuals, detect the act of throwing trash, and classify the type of waste being disposed.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            <h3>How are points awarded?</h3>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Points are awarded based on the type of trash and whether it was disposed of correctly in a designated dustbin. Different types of waste have different point values, and penalties are applied for improper disposal.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            <h3>What can I do with my points?</h3>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+            <p>You will be able to redeem your points for a variety of rewards, such as gift cards, discounts, and exclusive merchandise. The redeemable options will be available in the "Redeem Points" section soon.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            <h3>What if I believe my points were deducted incorrectly?</h3>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+            <p>If you believe there has been an error in your points, you can report the issue through the "Report an Issue" page. Our team will review your case and make any necessary corrections.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+</script>
+{% endblock %}

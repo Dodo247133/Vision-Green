@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Trash Detection System</title>
+    <title>Login - Vision Green</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Login</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flashes">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-    <form method="POST" action="/login">
-        <label for="aadhar_id">Aadhar ID:</label><br>
-        <input type="text" id="aadhar_id" name="aadhar_id" required><br><br>
-        
-        <input type="submit" value="Login">
-    </form>
-    <p>Don't have an account? <a href="/register">Register here</a>.</p>
-    <p><a href="/">Back to Home</a></p>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Welcome Back!</h2>
+            <p>Login to your Vision Green account.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/login">
+                <div class="input-group">
+                    <label for="aadhar_id">Aadhar ID</label>
+                    <input type="text" id="aadhar_id" name="aadhar_id" required placeholder="Enter your Aadhar ID">
+                </div>
+                <button type="submit" class="btn-auth">Login</button>
+            </form>
+            <p class="auth-switch">Don't have an account? <a href="/register">Register here</a>.</p>
+            <p class="auth-switch"><a href="/">Back to Home</a></p>
+        </div>
+    </div>
 </body>
 </html>

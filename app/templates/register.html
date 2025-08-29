@@ -3,35 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Trash Detection System</title>
+    <title>Register - Vision Green</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Register</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flashes">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-    <form method="POST" action="/register" enctype="multipart/form-data">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
-        
-        <label for="surname">Surname:</label><br>
-        <input type="text" id="surname" name="surname" required><br><br>
-        
-        <label for="aadhar_id">Aadhar ID:</label><br>
-        <input type="text" id="aadhar_id" name="aadhar_id" required><br><br>
-
-        <label for="face_photo">Photo:</label><br>
-        <input type="file" id="face_photo" name="face_photo" accept="image/*" required><br><br>
-        
-        <input type="submit" value="Register">
-    </form>
-    <p><a href="/">Back to Home</a></p>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Create Your Account</h2>
+            <p>Join Vision Green and help us make the world cleaner.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/register" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname" name="surname" required placeholder="Enter your surname">
+                </div>
+                <div class="input-group">
+                    <label for="aadhar_id">Aadhar ID</label>
+                    <input type="text" id="aadhar_id" name="aadhar_id" required placeholder="Enter your Aadhar ID">
+                </div>
+                <div class="input-group">
+                    <label for="face_photo">Upload a clear photo of your face</label>
+                    <input type="file" id="face_photo" name="face_photo" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn-auth">Register</button>
+            </form>
+            <p class="auth-switch">Already have an account? <a href="/login">Login here</a>.</p>
+            <p class="auth-switch"><a href="/">Back to Home</a></p>
+        </div>
+    </div>
 </body>
 </html>

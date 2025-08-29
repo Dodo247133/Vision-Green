@@ -1,49 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Trash Detection System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>User Dashboard</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flashes">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-    <p>Welcome, {{ user.name }} {{ user.surname }}!</p>
-    <p>Your Current Points: {{ user.points }}</p>
+{% extends "base.html" %}
+{% block title %}Dashboard - Vision Green{% endblock %}
 
-    <h2>Welcome, {{ user.name }}!</h2>
-<p>Points: {{ user.points }}</p>
+{% block content %}
+<div class="dashboard-header">
+    <h2>Your Dashboard</h2>
+</div>
 
-<h3>Upload Disposal Footage</h3>
-<form action="/upload_footage" method="post" enctype="multipart/form-data">
-    <input type="file" name="footage">
-    <input type="submit" value="Upload">
-</form>
+<div class="summary-cards">
+    <div class="summary-card">
+        <i class="fas fa-recycle"></i>
+        <div>
+            <h3>Total Disposals</h3>
+            <p>{{ disposal_footages|length }}</p>
+        </div>
+    </div>
+    <div class="summary-card">
+        <i class="fas fa-star"></i>
+        <div>
+            <h3>Total Points</h3>
+            <p>{{ user.points }}</p>
+        </div>
+    </div>
+    <div class="summary-card">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <h3>Proper Disposals</h3>
+            <p>{{ disposal_footages|selectattr('points_awarded', 'ge', 0)|list|length }}</p>
+        </div>
+    </div>
+    <div class="summary-card">
+        <i class="fas fa-times-circle"></i>
+        <div>
+            <h3>Improper Disposals</h3>
+            <p>{{ disposal_footages|selectattr('points_awarded', 'lt', 0)|list|length }}</p>
+        </div>
+    </div>
+</div>
 
-<h3>Recent Disposal Footages</h3>
-<ul>
-    {% for footage in disposal_footages %}
-        <li>{{ footage.timestamp }} - {{ footage.trash_type }} - {{ footage.points_awarded }} points</li>
-    {% endfor %}
-</ul>
+<div class="dashboard-main">
+    <div class="recent-activity">
+        <h3>Recent Disposal Footages</h3>
+        <ul>
+            {% for footage in disposal_footages %}
+                <li>
+                    <span class="timestamp">{{ footage.timestamp }}</span>
+                    <span class="trash-type">{{ footage.trash_type }}</span>
+                    <span class="points {% if footage.points_awarded > 0 %}points-positive{% else %}points-negative{% endif %}">{{ footage.points_awarded }} points</span>
+                </li>
+            {% else %}
+                <li>No recent activity.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="disposal-chart">
+        <h3>Disposal Analysis</h3>
+        <canvas id="disposalChart"></canvas>
+    </div>
+</div>
 
-
-    <h2>Actions</h2>
-    <ul>
-        <li><a href="/redeem_points">Redeem Points</a></li>
-        <li><a href="/settings">Change Settings (Person Details)</a></li>
-        <li><a href="/report_issue">Report an Issue</a></li>
-        <li><a href="/faq">FAQ</a></li>
-    </ul>
-    <p><a href="/">Back to Home</a></p>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('disposalChart').getContext('2d');
+    const disposalChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Proper', 'Improper'],
+            datasets: [{
+                label: 'Disposal Analysis',
+                data: [{{ disposal_footages|selectattr('points_awarded', 'ge', 0)|list|length }}, {{ disposal_footages|selectattr('points_awarded', 'lt', 0)|list|length }}],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+{% endblock %}

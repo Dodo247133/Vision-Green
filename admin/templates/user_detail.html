@@ -1,41 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details - Admin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>User Details: {{ user.name }} {{ user.surname }}</h1>
-    <p><strong>ID:</strong> {{ user.id }}</p>
-    <p><strong>Aadhar ID:</strong> {{ user.aadhar_id }}</p>
-    <p><strong>Face ID:</strong> {{ user.face_id }}</p>
-    <p><strong>Points:</strong> {{ user.points }}</p>
-    <p><strong>Active:</strong> {{ 'Yes' if user.is_active else 'No' }}</p>
-    <p><strong>Registered At:</strong> {{ user.registered_at }}</p>
+{% extends "admin_base.html" %}
+{% block title %}User Details - Vision Green{% endblock %}
+{% block page_title %}User Details{% endblock %}
 
-    <h2>Reported Issues</h2>
-    {% if issues %}
-        <ul>
-            {% for issue in issues %}
-                <li>
-                    <strong>Issue ID:</strong> {{ issue.id }}<br>
-                    <strong>Type:</strong> {{ issue.issue_type }}<br>
-                    <strong>Description:</strong> {{ issue.description }}<br>
-                    <strong>Reported At:</strong> {{ issue.reported_at }}<br>
-                    <strong>Resolved:</strong> {{ 'Yes' if issue.is_resolved else 'No' }}<br>
-                    {% if issue.is_resolved %}
-                        <strong>Resolved By:</strong> {{ issue.resolved_by }}<br>
-                        <strong>Resolved At:</strong> {{ issue.resolved_at }}<br>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No issues reported by this user.</p>
-    {% endif %}
+{% block content %}
+<div class="user-detail-container">
+    <div class="user-profile-card">
+        <div class="profile-header">
+            <img src="{{ url_for('static', filename='uploads/' + user.face_id) }}" alt="User Photo" class="profile-photo">
+            <h3>{{ user.name }} {{ user.surname }}</h3>
+            <p>{{ user.aadhar_id }}</p>
+        </div>
+        <div class="profile-details">
+            <p><strong>Points:</strong> {{ user.points }}</p>
+            <p><strong>Joined:</strong> {{ user.join_date }}</p>
+        </div>
+    </div>
 
-    <p><a href="/admin/users">Back to User Management</a></p>
-</body>
-</html>
+    <div class="user-activity">
+        <h3>Disposal History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Trash Type</th>
+                    <th>Points Awarded</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for footage in disposal_footages %}
+                    <tr>
+                        <td>{{ footage.timestamp }}</td>
+                        <td>{{ footage.trash_type }}</td>
+                        <td class="{% if footage.points_awarded > 0 %}points-positive{% else %}points-negative{% endif %}">{{ footage.points_awarded }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No disposal history found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
